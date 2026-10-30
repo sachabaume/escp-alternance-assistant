@@ -1,0 +1,1919 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESCP | Assistant Alternance</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef;
+      --cp-bg-elevated: #fcfbf8;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede;
+      --cp-border-strong: #919191;
+      --cp-text: #242424;
+      --cp-text-muted: #5c5c5c;
+      --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b;
+      --cp-accent-hover: #9a1a41;
+      --cp-accent-soft: rgba(177, 31, 75, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(177, 31, 75, 0.12);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a;
+      --cp-bg-elevated: #343231;
+      --cp-surface: #292929;
+      --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747;
+      --cp-border-strong: #5f5f5f;
+      --cp-text: #dedede;
+      --cp-text-muted: #919191;
+      --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1;
+      --cp-accent-hover: #fb7b91;
+      --cp-accent-soft: rgba(253, 142, 161, 0.14);
+      --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(41, 41, 41, 0.72);
+      --cp-panel-strong: rgba(41, 41, 41, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(253, 142, 161, 0.12);
+    }
+
+    :root {
+      --cp-card-shadow: 0 0 2px var(--cp-border-strong), 0 1px 2px var(--cp-border-strong);
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --radius-sm: 0.625rem;
+      --radius-lg: 16px;
+      --maxw: 1280px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--cp-bg);
+      color: var(--cp-text);
+      line-height: 1.45;
+    }
+
+    .app {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: var(--space-4);
+      display: grid;
+      gap: var(--space-4);
+    }
+    .panel {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--cp-card-shadow);
+    }
+
+    .hero {
+      overflow: clip;
+    }
+    .hero-banner {
+      min-height: 172px;
+      background-image: linear-gradient(var(--cp-overlay), var(--cp-overlay)), url("./escp-banner-space.png");
+      background-size: cover;
+      background-position: center;
+      padding: var(--space-4);
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: var(--space-3);
+    }
+    html[data-theme="dark"] .hero-banner {
+      background-image: linear-gradient(var(--cp-panel), var(--cp-panel)), url("./escp-banner-space.png");
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      background: var(--cp-panel-strong);
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2) var(--space-3);
+    }
+    .brand img { height: 42px; width: auto; }
+    .brand h1 { margin: 0; font-size: 1.1rem; line-height: 1.2; }
+    .brand p { margin: 0; color: var(--cp-text-muted); font-size: 0.9rem; }
+
+    .hero-meta {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      min-width: 250px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      border: 1px solid var(--cp-border);
+      border-radius: 999px;
+      background: var(--cp-panel-strong);
+      padding: var(--space-2) var(--space-3);
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+    .chip strong { font-size: 0.9rem; }
+
+    .tabs {
+      display: flex;
+      gap: var(--space-2);
+      padding: var(--space-3);
+      border-top: 1px solid var(--cp-border);
+      background: var(--cp-bg-elevated);
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      border: 1px solid var(--cp-border);
+      background: var(--cp-surface);
+      color: var(--cp-text);
+      border-radius: 999px;
+      padding: var(--space-2) var(--space-3);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+    }
+    .tab-btn:hover { transform: translateY(-1px); }
+    .tab-btn.active {
+      border-color: var(--cp-accent);
+      background: var(--cp-accent-soft);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active {
+      display: block;
+      animation: panelIn 180ms ease;
+    }
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+    .card {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      box-shadow: var(--cp-card-shadow);
+    }
+    .card h2, .card h3, .card h4 { margin: 0 0 var(--space-2); line-height: 1.2; }
+    .muted { color: var(--cp-text-muted); }
+    .tiny { color: var(--cp-text-soft); font-size: 0.84rem; }
+    .strong { font-weight: 700; }
+
+    .span-12 { grid-column: span 12; }
+    .span-8 { grid-column: span 8; }
+    .span-7 { grid-column: span 7; }
+    .span-6 { grid-column: span 6; }
+    .span-5 { grid-column: span 5; }
+    .span-4 { grid-column: span 4; }
+    .span-3 { grid-column: span 3; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-3);
+    }
+    .stat {
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-sm);
+      background: var(--cp-surface-soft);
+      padding: var(--space-3);
+      display: grid;
+      gap: var(--space-1);
+      min-height: 92px;
+    }
+    .value { font-size: 1.35rem; font-weight: 700; }
+
+    .progress {
+      width: 100%;
+      height: 0.72rem;
+      border-radius: 999px;
+      border: 1px solid var(--cp-border);
+      background: var(--cp-surface-soft);
+      overflow: clip;
+    }
+    .progress > span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: var(--cp-accent);
+      transition: width 260ms ease;
+    }
+
+    .pill {
+      border: 1px solid var(--cp-border);
+      border-radius: 999px;
+      padding: 0.14rem 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      gap: var(--space-1);
+      background: var(--cp-surface-soft);
+    }
+    .pill.success { border-color: var(--cp-success); background: var(--cp-accent-soft); }
+    .pill.warn { border-color: var(--cp-warning); background: var(--cp-accent-soft); }
+    .pill.danger { border-color: var(--cp-danger); background: var(--cp-accent-soft); }
+    .pill.accent { border-color: var(--cp-accent); background: var(--cp-accent-soft); }
+
+    .list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: var(--space-2);
+    }
+    .item {
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-3);
+      background: var(--cp-surface);
+      display: grid;
+      gap: var(--space-2);
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      align-items: center;
+      color: var(--cp-text-soft);
+      font-size: 0.84rem;
+    }
+
+    .btn, input, select, textarea {
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-sm);
+      background: var(--cp-surface);
+      color: var(--cp-text);
+      font: inherit;
+    }
+    .btn {
+      cursor: pointer;
+      padding: 0.52rem 0.72rem;
+      font-weight: 700;
+    }
+    .btn.primary {
+      background: var(--cp-accent);
+      border-color: var(--cp-accent);
+      color: var(--cp-accent-fg);
+    }
+    .btn.primary:hover { background: var(--cp-accent-hover); }
+    .btn.ghost { background: var(--cp-surface-soft); }
+    input, select, textarea { padding: 0.52rem 0.62rem; width: 100%; }
+    textarea { min-height: 92px; resize: vertical; }
+    label.field {
+      display: grid;
+      gap: var(--space-1);
+      font-size: 0.9rem;
+    }
+    .field-hint { color: var(--cp-text-soft); font-size: 0.78rem; }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      align-items: center;
+    }
+    .cta-row .tiny { margin-left: auto; }
+
+    .focus-box {
+      border: 1px solid var(--cp-accent);
+      background: var(--cp-accent-soft);
+      border-radius: var(--radius-sm);
+      padding: var(--space-3);
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .action-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--space-4);
+    }
+    .switch {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-bottom: var(--space-3);
+    }
+    .switch .btn.active {
+      border-color: var(--cp-accent);
+      background: var(--cp-accent-soft);
+    }
+
+    .phase-list {
+      display: grid;
+      gap: var(--space-2);
+    }
+    .phase-card {
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-sm);
+      background: var(--cp-surface);
+      padding: var(--space-3);
+    }
+
+    .timeline-wrap {
+      position: relative;
+      display: grid;
+      gap: var(--space-3);
+    }
+    .timeline-wrap::before {
+      content: "";
+      position: absolute;
+      left: 0.58rem;
+      top: 0.4rem;
+      bottom: 0.4rem;
+      width: 2px;
+      background: var(--cp-border);
+    }
+    .tl {
+      margin-left: var(--space-5);
+      position: relative;
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-3);
+      cursor: pointer;
+      transition: transform 140ms ease, border-color 140ms ease;
+      background: var(--cp-surface);
+    }
+    .tl::before {
+      content: "";
+      position: absolute;
+      left: -1.08rem;
+      top: 1rem;
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 999px;
+      border: 2px solid var(--cp-accent);
+      background: var(--cp-surface);
+    }
+    .tl:hover { border-color: var(--cp-accent); transform: translateY(-1px); }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-3);
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+    .cal-name, .cal-cell {
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2);
+      background: var(--cp-surface);
+    }
+    .cal-name {
+      background: var(--cp-surface-soft);
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .cal-cell {
+      min-height: 94px;
+      display: grid;
+      align-content: start;
+      gap: var(--space-1);
+    }
+    .cal-cell.today { border-color: var(--cp-accent); box-shadow: inset 0 0 0 1px var(--cp-accent); }
+    .cal-num { font-size: 0.8rem; font-weight: 700; }
+    .cal-evt {
+      border: 1px solid var(--cp-border);
+      border-radius: 0.44rem;
+      background: var(--cp-accent-soft);
+      padding: 0.1rem 0.26rem;
+      font-size: 0.7rem;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .stepper {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--space-2);
+      margin-bottom: var(--space-3);
+    }
+    .step {
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-sm);
+      background: var(--cp-surface-soft);
+      padding: var(--space-2);
+      display: grid;
+      gap: var(--space-1);
+      cursor: pointer;
+      text-align: left;
+    }
+    .step.active {
+      border-color: var(--cp-accent);
+      background: var(--cp-accent-soft);
+    }
+
+    .doc-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--space-4);
+      align-items: start;
+    }
+
+    .confidentiality {
+      border: 1px dashed var(--cp-border-strong);
+      border-radius: var(--radius-sm);
+      padding: var(--space-3);
+      background: var(--cp-surface-soft);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-4);
+      background: var(--cp-overlay);
+      z-index: 30;
+    }
+    .modal.open { display: flex; }
+    .modal-card {
+      width: min(780px, 100%);
+      max-height: 88vh;
+      overflow: auto;
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--cp-shadow);
+      padding: var(--space-4);
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+    }
+
+    .onboarding-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: var(--cp-overlay);
+      padding: var(--space-4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .onboarding-overlay.open { display: flex; }
+    .onboarding-card {
+      width: min(920px, 100%);
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--cp-shadow);
+      padding: var(--space-5);
+    }
+    .onboarding-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      margin-top: var(--space-3);
+    }
+
+    details {
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-sm);
+      background: var(--cp-surface);
+      padding: var(--space-3);
+    }
+    details + details { margin-top: var(--space-2); }
+    summary { cursor: pointer; font-weight: 700; }
+
+    .hidden { display: none; }
+
+    .btn:focus-visible,
+    .tab-btn:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    .step:focus-visible {
+      outline: 2px solid var(--cp-link);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 1080px) {
+      .span-8, .span-7, .span-6, .span-5, .span-4, .span-3 { grid-column: span 12; }
+      .action-layout, .doc-grid, .onboarding-content { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 780px) {
+      .hero-banner { min-height: 136px; align-items: start; }
+      .brand img { height: 34px; }
+      .tabs { overflow-x: auto; flex-wrap: nowrap; }
+      .calendar-grid { gap: var(--space-1); }
+      .cal-cell { min-height: 72px; }
+      .stepper { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="panel hero">
+      <div class="hero-banner">
+        <div class="brand">
+          <img src="./escp-logo.png" alt="Logo ESCP">
+          <div>
+            <h1>Assistant Alternance MIM 24 mois</h1>
+            <p>Interface guidée pour piloter l'année de A à Z</p>
+          </div>
+        </div>
+        <div class="hero-meta">
+          <div id="todayChip" class="chip"></div>
+          <div class="chip">
+            <strong>Profil actif :</strong>
+            <span id="activeUserLabel">Aucun</span>
+          </div>
+        </div>
+      </div>
+      <nav class="tabs" aria-label="Navigation principale">
+        <button class="tab-btn active" data-tab="assistant">Assistant</button>
+        <button class="tab-btn" data-tab="action-plan">Plan d'action</button>
+        <button class="tab-btn" data-tab="timeline">Timeline</button>
+        <button class="tab-btn" data-tab="calendar">Calendrier</button>
+        <button class="tab-btn" data-tab="intent-doc">Document d'intention</button>
+        <button class="tab-btn" data-tab="profile">Profil</button>
+        <button class="tab-btn" data-tab="resources">Ressources</button>
+      </nav>
+    </header>
+
+    <main>
+      <section id="assistant" class="tab-panel active"></section>
+      <section id="action-plan" class="tab-panel"></section>
+      <section id="timeline" class="tab-panel"></section>
+      <section id="calendar" class="tab-panel"></section>
+      <section id="intent-doc" class="tab-panel"></section>
+      <section id="profile" class="tab-panel"></section>
+      <section id="resources" class="tab-panel"></section>
+    </main>
+  </div>
+
+  <aside id="eventModal" class="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <div>
+          <h3 id="modalTitle"></h3>
+          <p id="modalMeta" class="muted"></p>
+        </div>
+        <button id="closeModal" class="btn">Fermer</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </aside>
+
+  <aside id="onboarding" class="onboarding-overlay" aria-hidden="true">
+    <div class="onboarding-card">
+      <h2>Bienvenue 👋 Construisons votre espace personnel</h2>
+      <p class="muted">Ce parcours configure votre profil une seule fois, puis toutes les sections se personnalisent automatiquement.</p>
+      <div class="progress" aria-label="Progression onboarding"><span id="onboardingProgress"></span></div>
+      <div id="onboardingBody" class="onboarding-content"></div>
+      <div class="cta-row" style="margin-top:1rem;">
+        <button id="onboardingPrev" class="btn">Retour</button>
+        <button id="onboardingNext" class="btn primary">Continuer</button>
+      </div>
+    </div>
+  </aside>
+
+  <script>
+    const appStart = new Date("2026-08-25T00:00:00");
+    const appEnd = new Date("2028-08-31T23:59:59");
+    const categories = ["Tout", "École", "Entreprise", "Administratif", "Livrables", "Réunions", "Évaluations"];
+    const STATUS = {
+      TODO: "A faire",
+      IN_PROGRESS: "En cours",
+      DONE: "Termine",
+      LATE: "En retard",
+      URGENT: "Urgent",
+      UPCOMING: "A venir",
+      TO_CONFIRM: "A confirmer"
+    };
+
+    const journeyItems = [
+      { id: "period-m1-school", kind: "period", category: "École", title: "Plein temps ecole (M1 Paris)", start: "2026-08-25", end: "2026-10-16", mandatory: true, owner: "Etudiant", action: "Suivre les cours du semestre M1 Fall.", details: "Rentree academique 25/08/2026." },
+      { id: "period-m1-company-fall", kind: "period", category: "Entreprise", title: "Plein temps entreprise", start: "2026-10-19", end: "2027-01-01", mandatory: true, owner: "Etudiant + Entreprise", action: "Periode en entreprise a temps plein.", details: "Missions evolutives en responsabilite." },
+      { id: "period-m1-alt", kind: "period", category: "École", title: "Alternance hebdomadaire (1j ecole / 4j entreprise)", start: "2027-01-04", end: "2027-04-30", mandatory: true, owner: "Etudiant", action: "Presence ecole chaque mercredi + entreprise.", details: "Campus Paris, rythme hebdomadaire." },
+      { id: "period-madrid", kind: "period", category: "École", title: "Plein temps ecole - Campus Madrid", start: "2027-05-03", end: "2027-05-28", mandatory: true, owner: "Etudiant", action: "Suivre la specialisation (90h).", details: "Mobilite courte obligatoire en M1." },
+      { id: "period-company-pre-intl", kind: "period", category: "Entreprise", title: "Plein temps entreprise (avant semestre international)", start: "2027-05-31", end: null, mandatory: true, owner: "Etudiant + Entreprise", action: "Poursuivre les missions avant depart mobilite.", details: "Date de fin selon debut du semestre international.", needsConfirmation: true, confirmationReason: "Date exacte variable selon affectation." },
+      { id: "period-intl-semester", kind: "period", category: "École", title: "Semestre international (M2 Fall)", start: "2027-09-01", end: "2027-12-31", mandatory: true, owner: "Etudiant", action: "Valider minimum 25 ECTS hors Paris / hors France.", details: "Campus ESCP hors Paris ou partenaire.", needsConfirmation: true, confirmationReason: "Calendrier exact dependant de l'universite partenaire." },
+      { id: "period-m2-company-spring", kind: "period", category: "Entreprise", title: "Semestre entreprise (janvier-mai 2028)", start: "2028-01-01", end: "2028-05-31", mandatory: true, owner: "Etudiant + Entreprise", action: "Missions entreprise temps plein.", details: "Selon calendrier alternance 24 mois." },
+      { id: "period-m2-school-june", kind: "period", category: "École", title: "Plein temps ecole (Paris, 4 semaines)", start: "2028-05-27", end: "2028-06-30", mandatory: true, owner: "Etudiant", action: "Soutenance memoire + seminaire final.", details: "Periode indiquee fin mai a fin juin.", needsConfirmation: true, confirmationReason: "Bornes exactes non precisees au jour pres." },
+      { id: "period-m2-company-end", kind: "period", category: "Entreprise", title: "Plein temps entreprise (juillet-aout 2028)", start: "2028-07-01", end: "2028-08-31", mandatory: true, owner: "Etudiant + Entreprise", action: "Derniere periode entreprise.", details: "Fin de formation 31/08/2028." },
+      { id: "milestone-diploma", kind: "milestone", category: "École", title: "Diplome Master in Management", date: "2028-08-31", mandatory: true, owner: "ESCP", action: "Cloture de parcours sous reserve de validation.", details: "Date de diplome non explicitee au jour pres.", needsConfirmation: true, confirmationReason: "Mentionnee en aout 2028 sans date officielle precise." },
+      { id: "admin-30sept", kind: "deadline", category: "Administratif", title: "Deposer fiche coordonnees + attestation signee", date: "2026-09-30", mandatory: true, owner: "Etudiant", action: "Televerser sur BlackBoard.", deliverable: "Fiche coordonnees + attestation apprentissage", channel: "BlackBoard", priority: "Haute" },
+      { id: "admin-30nov-intention", kind: "deadline", category: "Livrables", title: "Deposer le document d'intention valide", date: "2026-11-30", mandatory: true, owner: "Etudiant", action: "Faire signer MA + professeur tuteur puis televerser.", deliverable: "Document d'intention", channel: "BlackBoard", priority: "Haute" },
+      { id: "admin-31dec-cpam", kind: "deadline", category: "Administratif", title: "Finaliser la demarche CPAM", date: "2026-12-31", mandatory: true, owner: "Etudiant", action: "Envoyer formulaire n°750 + pieces a la CPAM.", deliverable: "Formulaire 750 + contrat + RIB + piece d'identite", channel: "CPAM", priority: "Haute" },
+      { id: "eval1", kind: "deadline", category: "Évaluations", title: "Autoevaluation 1 + evaluation conjointe 1", date: "2026-12-31", mandatory: true, owner: "Etudiant + MA", action: "Evaluer puis transmettre avant date butoir.", deliverable: "Autoevaluation 1", channel: "BlackBoard", priority: "Haute" },
+      { id: "suivi-s1", kind: "deadline", category: "Livrables", title: "Fiche de suivi S1 (M1)", date: "2026-12-31", mandatory: true, owner: "Etudiant", action: "Signer et deposer la fiche de suivi S1.", deliverable: "Fiche de suivi 1", channel: "BlackBoard", priority: "Haute" },
+      { id: "cr-trip-1", kind: "deadline", category: "Réunions", title: "Compte-rendu reunion tripartite 1", date: "2026-12-31", mandatory: true, owner: "Etudiant", action: "Rediger, faire signer, deposer.", deliverable: "CR reunion tripartite 1", channel: "BlackBoard", priority: "Haute" },
+      { id: "eval2", kind: "deadline", category: "Évaluations", title: "Autoevaluation 2 + evaluation conjointe 2", date: "2027-06-30", mandatory: true, owner: "Etudiant + MA", action: "Mettre a jour les competences.", deliverable: "Autoevaluation 2", channel: "BlackBoard", priority: "Haute" },
+      { id: "suivi-s2-m1", kind: "deadline", category: "Livrables", title: "Fiche de suivi S2 (M1)", date: "2027-06-30", mandatory: true, owner: "Etudiant", action: "Televerser la fiche de suivi S2 M1.", deliverable: "Fiche de suivi 2 (M1)", channel: "BlackBoard", priority: "Haute" },
+      { id: "cr-trip-2", kind: "deadline", category: "Réunions", title: "Compte-rendu visite entreprise (tripartite 2)", date: "2027-06-30", mandatory: true, owner: "Etudiant", action: "Rediger puis faire valider MA + tuteur.", deliverable: "CR reunion tripartite 2", channel: "BlackBoard", priority: "Haute", needsConfirmation: true, confirmationReason: "Une mention indique janvier/fevrier 2026, incoherent avec fev/mars 2027." },
+      { id: "cr-bipartite-31dec27", kind: "deadline", category: "Réunions", title: "Compte-rendu reunion bipartite mobilite", date: "2027-12-31", mandatory: true, owner: "Etudiant", action: "Rediger avec professeur tuteur puis televerser.", deliverable: "CR reunion bipartite", channel: "BlackBoard", priority: "Moyenne" },
+      { id: "eval3", kind: "deadline", category: "Évaluations", title: "Autoevaluation 3 + evaluation conjointe 3", date: "2028-06-30", mandatory: true, owner: "Etudiant + MA", action: "Derniere autoevaluation obligatoire.", deliverable: "Autoevaluation 3", channel: "BlackBoard", priority: "Haute" },
+      { id: "suivi-s2-m2", kind: "deadline", category: "Livrables", title: "Fiche de suivi second semestre M2", date: "2028-06-30", mandatory: true, owner: "Etudiant", action: "Televerser la fiche finalisee.", deliverable: "Fiche de suivi M2", channel: "BlackBoard", priority: "Haute" },
+      { id: "cr-trip-3", kind: "deadline", category: "Réunions", title: "Compte-rendu reunion tripartite 3 / bilan", date: "2028-06-30", mandatory: true, owner: "Etudiant", action: "Rediger le bilan final en visio.", deliverable: "CR reunion tripartite 3", channel: "BlackBoard", priority: "Haute" },
+      { id: "questionnaire-31jul28", kind: "deadline", category: "Administratif", title: "Questionnaire de satisfaction apprenti", date: "2028-07-31", mandatory: true, owner: "Etudiant", action: "Completer et deposer sur BlackBoard.", deliverable: "Questionnaire de satisfaction", channel: "BlackBoard", priority: "Moyenne" },
+      { id: "meet-contact-tuteur", kind: "meeting", category: "Réunions", title: "Prise de contact professeur tuteur", date: "2026-10-31", mandatory: true, owner: "Etudiant", action: "Initier le rendez-vous de contact.", details: "Sources: septembre 2026, ou septembre/octobre 2026.", needsConfirmation: true, confirmationReason: "Fenetre variable selon documents." },
+      { id: "meet-trip-1", kind: "meeting", category: "Réunions", title: "1ere reunion tripartite (visio)", date: "2026-11-30", mandatory: true, owner: "Etudiant", action: "Organiser reunion tuteur, MA, apprenti.", details: "Doit servir a valider le document d'intention.", needsConfirmation: true, confirmationReason: "Une source dit avant fin octobre, d'autres octobre/novembre." },
+      { id: "meet-trip-2", kind: "meeting", category: "Réunions", title: "2eme reunion tripartite (entreprise)", date: "2027-03-31", mandatory: true, owner: "Etudiant", action: "Organiser la visite en entreprise.", details: "Fenetre fevrier/mars 2027." },
+      { id: "meet-bipartite-intl", kind: "meeting", category: "Réunions", title: "Reunion bipartite pendant mobilite", date: "2027-12-15", mandatory: true, owner: "Etudiant + Professeur tuteur", action: "Faire un point pendant la mobilite.", details: "Periode novembre/decembre 2027." },
+      { id: "meet-trip-3", kind: "meeting", category: "Réunions", title: "3eme reunion tripartite (bilan)", date: "2028-06-15", mandatory: true, owner: "Etudiant", action: "Organiser la reunion de bilan final.", details: "Periode mai/juin 2028." },
+      { id: "forum-entreprises", kind: "milestone", category: "École", title: "Journee ESCP Forum Entreprises", date: "2028-01-31", mandatory: false, owner: "ESCP", action: "Prevoir disponibilite fin janvier 2028.", details: "Indique TBC.", needsConfirmation: true, confirmationReason: "Date exacte non confirmee (TBC)." },
+      { id: "mobility-convention", kind: "deadline", category: "Administratif", title: "Convention de mobilite internationale signee", date: "2027-08-31", mandatory: true, owner: "Etudiant + Entreprise + CFA + Organisme d'accueil", action: "Finaliser la convention avant depart.", channel: "CFA/ESCP", priority: "Haute", needsConfirmation: true, confirmationReason: "Date exacte non donnee; obligation 'avant depart' explicite." }
+    ];
+
+    const phaseGroups = [
+      {
+        id: "phase-1",
+        title: "Demarrage et M1 Fall",
+        items: ["admin-30sept", "meet-contact-tuteur", "meet-trip-1", "admin-30nov-intention", "admin-31dec-cpam"]
+      },
+      {
+        id: "phase-2",
+        title: "Suivi pedagogique M1",
+        items: ["eval1", "suivi-s1", "cr-trip-1", "meet-trip-2", "eval2", "suivi-s2-m1", "cr-trip-2"]
+      },
+      {
+        id: "phase-3",
+        title: "Mobilite internationale",
+        items: ["mobility-convention", "meet-bipartite-intl", "cr-bipartite-31dec27"]
+      },
+      {
+        id: "phase-4",
+        title: "M2 et cloture",
+        items: ["meet-trip-3", "eval3", "suivi-s2-m2", "cr-trip-3", "questionnaire-31jul28"]
+      }
+    ];
+
+    const intentSteps = [
+      {
+        key: "context",
+        title: "Contexte et objectif",
+        description: "Pourquoi ce document existe et ce que vous voulez construire pendant l'alternance."
+      },
+      {
+        key: "missions",
+        title: "Missions et perimetre",
+        description: "Missions principales, livrables attendus et interlocuteurs clefs."
+      },
+      {
+        key: "skills",
+        title: "Competences visees",
+        description: "Competences techniques et comportementales a developper."
+      },
+      {
+        key: "supervision",
+        title: "Suivi et validations",
+        description: "Organisation MA/tuteur et preparation de la reunion tripartite."
+      },
+      {
+        key: "finalize",
+        title: "Synthese pre-depot",
+        description: "Verifier completude, signatures et date de depot."
+      }
+    ];
+
+    const STORAGE = {
+      users: "escpUsersV2",
+      activeUser: "escpActiveUserV2",
+      userDataPrefix: "escpUserDataV2:"
+    };
+
+    const state = {
+      tab: "assistant",
+      actionView: "deadlines",
+      timelineFilter: "Tout",
+      deadlineStatusFilter: "Tout",
+      deadlineCategoryFilter: "Tout",
+      deadlineSort: "date-asc",
+      calendarMonth: new Date().getMonth(),
+      calendarYear: new Date().getFullYear(),
+      users: readJSON(STORAGE.users, []),
+      activeUserId: localStorage.getItem(STORAGE.activeUser) || null,
+      data: null,
+      intentStep: 0,
+      onboardingStep: 0,
+      onboardingDraft: {}
+    };
+
+    const byId = Object.fromEntries(journeyItems.map((item) => [item.id, item]));
+    const deadlineLike = journeyItems.filter((i) => ["deadline", "meeting"].includes(i.kind));
+    const timelineItems = journeyItems.filter((i) => ["period", "deadline", "meeting", "milestone"].includes(i.kind));
+
+    function readJSON(key, fallback) {
+      try {
+        return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+      } catch (_) {
+        return fallback;
+      }
+    }
+
+    function writeJSON(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function currentUser() {
+      return state.users.find((u) => u.id === state.activeUserId) || null;
+    }
+
+    function defaultData() {
+      return {
+        profile: {
+          firstName: "",
+          lastName: "",
+          cohort: "Promo 2028",
+          company: "",
+          roleTitle: "",
+          apprenticeMentorName: "",
+          apprenticeMentorRole: "",
+          apprenticeMentorEmail: "",
+          apprenticeMentorPhone: "",
+          tutorName: "",
+          tutorEmail: "",
+          tutorPhone: "",
+          preferredView: "Assistant"
+        },
+        completed: {},
+        intentDoc: {
+          context: {
+            intentGoal: "",
+            missionContext: "",
+            expectedImpact: ""
+          },
+          missions: {
+            missionScope: "",
+            expectedDeliverables: "",
+            stakeholders: ""
+          },
+          skills: {
+            technicalSkills: "",
+            softSkills: "",
+            learningObjectives: ""
+          },
+          supervision: {
+            tripartiteWindow: "",
+            mentorSupport: "",
+            tutorSupport: "",
+            watchPoints: ""
+          },
+          finalize: {
+            internalDeadline: "",
+            signaturesReady: false,
+            uploadChannel: "BlackBoard",
+            finalChecklistNote: ""
+          }
+        },
+        prefs: {
+          actionFilter: "deadlines"
+        }
+      };
+    }
+
+    function loadDataForActiveUser() {
+      if (!state.activeUserId) {
+        state.data = defaultData();
+        return;
+      }
+      const key = STORAGE.userDataPrefix + state.activeUserId;
+      state.data = Object.assign(defaultData(), readJSON(key, defaultData()));
+      state.data.profile = Object.assign(defaultData().profile, state.data.profile || {});
+      state.data.intentDoc = Object.assign(defaultData().intentDoc, state.data.intentDoc || {});
+      Object.keys(defaultData().intentDoc).forEach((k) => {
+        state.data.intentDoc[k] = Object.assign(defaultData().intentDoc[k], state.data.intentDoc[k] || {});
+      });
+    }
+
+    function saveData() {
+      if (!state.activeUserId) return;
+      writeJSON(STORAGE.userDataPrefix + state.activeUserId, state.data);
+      const userIndex = state.users.findIndex((u) => u.id === state.activeUserId);
+      if (userIndex >= 0) {
+        const p = state.data.profile;
+        state.users[userIndex] = {
+          id: state.activeUserId,
+          firstName: p.firstName,
+          lastName: p.lastName,
+          company: p.company,
+          updatedAt: new Date().toISOString()
+        };
+        writeJSON(STORAGE.users, state.users);
+      }
+    }
+
+    function createUserFromOnboarding(profileData) {
+      const id = (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : String(Date.now());
+      const user = {
+        id,
+        firstName: profileData.firstName,
+        lastName: profileData.lastName,
+        company: profileData.company,
+        updatedAt: new Date().toISOString()
+      };
+      state.users = [user].concat(state.users.filter((u) => u.id !== id));
+      state.activeUserId = id;
+      localStorage.setItem(STORAGE.activeUser, id);
+      writeJSON(STORAGE.users, state.users);
+      state.data = defaultData();
+      state.data.profile = Object.assign(state.data.profile, profileData);
+      saveData();
+    }
+
+    function deleteCurrentUser() {
+      if (!state.activeUserId) return;
+      localStorage.removeItem(STORAGE.userDataPrefix + state.activeUserId);
+      state.users = state.users.filter((u) => u.id !== state.activeUserId);
+      writeJSON(STORAGE.users, state.users);
+      state.activeUserId = state.users.length ? state.users[0].id : null;
+      if (state.activeUserId) localStorage.setItem(STORAGE.activeUser, state.activeUserId);
+      else localStorage.removeItem(STORAGE.activeUser);
+      loadDataForActiveUser();
+      renderAll();
+      maybeOpenOnboarding();
+    }
+
+    function fmtDate(dateLike) {
+      if (!dateLike) return "Information non disponible";
+      const d = new Date(dateLike + "T00:00:00");
+      return new Intl.DateTimeFormat("fr-FR", { day: "2-digit", month: "long", year: "numeric" }).format(d);
+    }
+
+    function toDate(item) {
+      const raw = item.date || item.start || item.end;
+      return raw ? new Date(raw + "T00:00:00") : null;
+    }
+
+    function dayDiff(targetDate) {
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+      const d = new Date(targetDate);
+      d.setHours(0, 0, 0, 0);
+      return Math.round((d - now) / 86400000);
+    }
+
+    function countdown(dateLike) {
+      if (!dateLike) return "Date non disponible";
+      const diff = dayDiff(new Date(dateLike + "T00:00:00"));
+      if (diff === 0) return "Aujourd'hui";
+      if (diff === 1) return "Demain";
+      if (diff > 1) return "Dans " + diff + " jours";
+      if (diff === -1) return "Hier";
+      return "Il y a " + Math.abs(diff) + " jours";
+    }
+
+    function statusFor(item) {
+      if (state.data.completed[item.id]) return STATUS.DONE;
+      if (item.needsConfirmation) return STATUS.TO_CONFIRM;
+      if (item.kind === "period") {
+        const now = new Date();
+        const s = item.start ? new Date(item.start + "T00:00:00") : null;
+        const e = item.end ? new Date(item.end + "T23:59:59") : null;
+        if (!s) return STATUS.TO_CONFIRM;
+        if (e && now > e) return STATUS.DONE;
+        if (now >= s && (!e || now <= e)) return STATUS.IN_PROGRESS;
+        if (now < s) return STATUS.UPCOMING;
+        return STATUS.TO_CONFIRM;
+      }
+      const d = item.date ? new Date(item.date + "T00:00:00") : null;
+      if (!d) return STATUS.TO_CONFIRM;
+      const diff = dayDiff(d);
+      if (diff < 0) return STATUS.LATE;
+      if (diff <= 2) return STATUS.URGENT;
+      if (diff <= 14) return STATUS.UPCOMING;
+      return STATUS.TODO;
+    }
+
+    function statusPill(status) {
+      if (status === STATUS.DONE) return "success";
+      if (status === STATUS.LATE) return "danger";
+      if (status === STATUS.URGENT) return "warn";
+      if (status === STATUS.TO_CONFIRM) return "accent";
+      return "";
+    }
+
+    function periodProgress() {
+      const now = new Date();
+      const clamped = Math.max(appStart.getTime(), Math.min(now.getTime(), appEnd.getTime()));
+      return Math.round(((clamped - appStart.getTime()) / (appEnd.getTime() - appStart.getTime())) * 100);
+    }
+
+    function groupedProgress() {
+      const all = phaseGroups.flatMap((g) => g.items);
+      const done = all.filter((id) => state.data.completed[id]).length;
+      return { done, total: all.length, pct: Math.round((done / all.length) * 100) || 0 };
+    }
+
+    function nextDeadlines() {
+      return deadlineLike
+        .filter((i) => !state.data.completed[i.id] && i.date)
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
+    }
+
+    function currentPhase() {
+      const now = new Date();
+      const active = journeyItems.find((item) => {
+        if (item.kind !== "period" || !item.start) return false;
+        const s = new Date(item.start + "T00:00:00");
+        const e = item.end ? new Date(item.end + "T23:59:59") : null;
+        return now >= s && (!e || now <= e);
+      });
+      return active ? active.title : "Phase a confirmer";
+    }
+
+    function recommendedActions(limit) {
+      return nextDeadlines()
+        .filter((item) => [STATUS.URGENT, STATUS.UPCOMING, STATUS.LATE, STATUS.TODO, STATUS.TO_CONFIRM].includes(statusFor(item)))
+        .slice(0, limit);
+    }
+
+    function activeStudentName() {
+      const p = state.data.profile;
+      const full = [p.firstName, p.lastName].filter(Boolean).join(" ").trim();
+      return full || "Etudiant";
+    }
+
+    function openModal(itemId) {
+      const item = byId[itemId];
+      if (!item) return;
+      document.getElementById("modalTitle").textContent = item.title;
+      document.getElementById("modalMeta").textContent = [item.category, item.mandatory ? "Obligatoire" : "Optionnel", statusFor(item)].join(" · ");
+      const dateBlock = item.kind === "period"
+        ? "<p><strong>Periode:</strong> " + fmtDate(item.start) + " -> " + (item.end ? fmtDate(item.end) : "Fin a confirmer") + "</p>"
+        : "<p><strong>Date:</strong> " + fmtDate(item.date) + " <span class='tiny'>(" + countdown(item.date) + ")</span></p>";
+      document.getElementById("modalBody").innerHTML = [
+        dateBlock,
+        item.action ? "<p><strong>Action attendue:</strong> " + item.action + "</p>" : "",
+        item.owner ? "<p><strong>Responsable:</strong> " + item.owner + "</p>" : "",
+        item.deliverable ? "<p><strong>Livrable:</strong> " + item.deliverable + "</p>" : "",
+        item.channel ? "<p><strong>Canal:</strong> " + item.channel + "</p>" : "",
+        item.details ? "<p><strong>Details:</strong> " + item.details + "</p>" : "",
+        item.needsConfirmation ? "<p><strong>A confirmer:</strong> " + item.confirmationReason + "</p>" : ""
+      ].join("");
+      document.getElementById("eventModal").classList.add("open");
+      document.getElementById("eventModal").setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal() {
+      document.getElementById("eventModal").classList.remove("open");
+      document.getElementById("eventModal").setAttribute("aria-hidden", "true");
+    }
+
+    function toggleDone(id, checked) {
+      if (checked) state.data.completed[id] = true;
+      else delete state.data.completed[id];
+      saveData();
+      renderAll();
+    }
+
+    function intentCompleteness() {
+      const doc = state.data.intentDoc;
+      const required = [
+        doc.context.intentGoal,
+        doc.context.missionContext,
+        doc.missions.missionScope,
+        doc.missions.expectedDeliverables,
+        doc.skills.technicalSkills,
+        doc.skills.learningObjectives,
+        doc.supervision.tripartiteWindow,
+        doc.supervision.mentorSupport
+      ];
+      const done = required.filter((v) => String(v || "").trim().length > 0).length + (doc.finalize.signaturesReady ? 1 : 0);
+      const total = required.length + 1;
+      return { done, total, pct: Math.round((done / total) * 100) || 0 };
+    }
+
+    function goToTab(tabId) {
+      const btn = document.querySelector(".tab-btn[data-tab='" + tabId + "']");
+      if (btn) btn.click();
+    }
+
+    function renderAssistant() {
+      const root = document.getElementById("assistant");
+      const profile = state.data.profile;
+      const next = recommendedActions(1)[0];
+      const upcoming = recommendedActions(5);
+      const overdue = deadlineLike.filter((i) => !state.data.completed[i.id] && i.date && dayDiff(new Date(i.date + "T00:00:00")) < 0);
+      const progress = groupedProgress();
+      const docIntent = intentCompleteness();
+      const student = activeStudentName();
+
+      root.innerHTML = `
+        <div class="grid">
+          <article class="card span-8">
+            <h2>Bonjour ${student} 👋</h2>
+            <p class="muted">Vous etes actuellement dans la phase <strong>${currentPhase()}</strong>.</p>
+            <div class="stats">
+              <div class="stat">
+                <div class="tiny">Progression globale parcours</div>
+                <div class="value">${periodProgress()}%</div>
+                <div class="progress"><span style="width:${periodProgress()}%"></span></div>
+              </div>
+              <div class="stat">
+                <div class="tiny">Plan d'action complete</div>
+                <div class="value">${progress.done}/${progress.total}</div>
+                <div class="progress"><span style="width:${progress.pct}%"></span></div>
+              </div>
+              <div class="stat">
+                <div class="tiny">Document d'intention</div>
+                <div class="value">${docIntent.pct}%</div>
+                <div class="progress"><span style="width:${docIntent.pct}%"></span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card span-4">
+            <h3>Votre prochaine action</h3>
+            ${next ? `
+              <div class="focus-box">
+                <div class="meta">
+                  <span class="pill ${statusPill(statusFor(next))}">${statusFor(next)}</span>
+                  <span>${fmtDate(next.date)}</span>
+                  <span>${countdown(next.date)}</span>
+                </div>
+                <strong>${next.title}</strong>
+                <div class="tiny">${next.action || ""}</div>
+                <div class="cta-row">
+                  <button class="btn primary" data-complete-id="${next.id}">Marquer comme termine</button>
+                  <button class="btn" data-open-id="${next.id}">Voir details</button>
+                </div>
+              </div>
+            ` : "<p class='muted'>Aucune action immediate detectee.</p>"}
+            <div class="tiny" style="margin-top:0.7rem;">Entreprise: <strong>${profile.company || "A renseigner"}</strong> · Poste: <strong>${profile.roleTitle || "A renseigner"}</strong></div>
+          </article>
+
+          <article class="card span-7">
+            <h3>Actions des 30 prochains jours</h3>
+            <ul class="list">
+              ${upcoming.map((item) => `
+                <li class="item">
+                  <strong>${item.title}</strong>
+                  <div class="meta">
+                    <span class="pill ${statusPill(statusFor(item))}">${statusFor(item)}</span>
+                    <span>${fmtDate(item.date)}</span>
+                    <span>${countdown(item.date)}</span>
+                    <span>${item.category}</span>
+                  </div>
+                  <div class="cta-row">
+                    <button class="btn" data-open-id="${item.id}">Ouvrir</button>
+                    <label class="tiny"><input type="checkbox" data-check-id="${item.id}" ${state.data.completed[item.id] ? "checked" : ""}> Termine</label>
+                  </div>
+                </li>
+              `).join("") || "<li class='item'>Aucune action planifiee.</li>"}
+            </ul>
+          </article>
+
+          <article class="card span-5">
+            <h3>Ce qui arrive ensuite</h3>
+            <ul class="list">
+              ${journeyItems
+                .filter((i) => i.kind === "period" && i.start && new Date(i.start + "T00:00:00") >= new Date())
+                .sort((a, b) => new Date(a.start) - new Date(b.start))
+                .slice(0, 3)
+                .map((i) => `
+                  <li class="item">
+                    <strong>${i.title}</strong>
+                    <div class="meta">
+                      <span>${fmtDate(i.start)} -> ${i.end ? fmtDate(i.end) : "Fin a confirmer"}</span>
+                      ${i.needsConfirmation ? "<span class='pill accent'>A confirmer</span>" : ""}
+                    </div>
+                  </li>
+                `).join("")}
+            </ul>
+            <div class="tiny" style="margin-top:0.7rem;">${overdue.length > 0 ? overdue.length + " element(s) en retard a traiter en priorite." : "Aucun retard actif."}</div>
+          </article>
+        </div>
+      `;
+
+      root.querySelectorAll("[data-open-id]").forEach((btn) => btn.addEventListener("click", () => openModal(btn.getAttribute("data-open-id"))));
+      root.querySelectorAll("[data-check-id]").forEach((cb) => cb.addEventListener("change", (e) => toggleDone(e.target.getAttribute("data-check-id"), e.target.checked)));
+      root.querySelectorAll("[data-complete-id]").forEach((btn) => btn.addEventListener("click", () => toggleDone(btn.getAttribute("data-complete-id"), true)));
+    }
+
+    function renderActionPlan() {
+      const root = document.getElementById("action-plan");
+      let items = deadlineLike.slice();
+      if (state.deadlineCategoryFilter !== "Tout") items = items.filter((i) => i.category === state.deadlineCategoryFilter);
+      if (state.deadlineStatusFilter !== "Tout") items = items.filter((i) => statusFor(i) === state.deadlineStatusFilter);
+      if (state.deadlineSort === "date-asc") items.sort((a, b) => new Date(a.date) - new Date(b.date));
+      if (state.deadlineSort === "date-desc") items.sort((a, b) => new Date(b.date) - new Date(a.date));
+      if (state.deadlineSort === "urgency") items.sort((a, b) => dayDiff(new Date(a.date)) - dayDiff(new Date(b.date)));
+      const gp = groupedProgress();
+
+      root.innerHTML = `
+        <div class="card">
+          <h2>Plan d'action</h2>
+          <p class="muted"><strong>Distinction UX:</strong> "Echeances" = pilotage par date; "Parcours" = pilotage par etapes pedagogiques. Vous choisissez la vue selon votre besoin.</p>
+          <div class="switch">
+            <button class="btn ${state.actionView === "deadlines" ? "active" : ""}" data-action-view="deadlines">Vue Echeances</button>
+            <button class="btn ${state.actionView === "journey" ? "active" : ""}" data-action-view="journey">Vue Parcours guide</button>
+          </div>
+          <div class="action-layout">
+            <section id="actionPrimary"></section>
+            <aside>
+              <div class="phase-card">
+                <h4>Progression du plan</h4>
+                <p><strong>${gp.done}/${gp.total}</strong> actions terminees</p>
+                <div class="progress"><span style="width:${gp.pct}%"></span></div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      `;
+
+      const actionPrimary = document.getElementById("actionPrimary");
+      if (state.actionView === "deadlines") {
+        actionPrimary.innerHTML = `
+          <div class="phase-card">
+            <div class="meta" style="margin-bottom:0.6rem;">
+              <label class="field">Statut
+                <select id="statusFilter">${["Tout", STATUS.TODO, STATUS.IN_PROGRESS, STATUS.DONE, STATUS.LATE, STATUS.URGENT, STATUS.UPCOMING, STATUS.TO_CONFIRM].map((s) => "<option " + (state.deadlineStatusFilter === s ? "selected" : "") + ">" + s + "</option>").join("")}</select>
+              </label>
+              <label class="field">Categorie
+                <select id="catFilter">${categories.map((c) => "<option " + (state.deadlineCategoryFilter === c ? "selected" : "") + ">" + c + "</option>").join("")}</select>
+              </label>
+              <label class="field">Tri
+                <select id="sortFilter">
+                  <option value="date-asc" ${state.deadlineSort === "date-asc" ? "selected" : ""}>Date croissante</option>
+                  <option value="date-desc" ${state.deadlineSort === "date-desc" ? "selected" : ""}>Date decroissante</option>
+                  <option value="urgency" ${state.deadlineSort === "urgency" ? "selected" : ""}>Urgence</option>
+                </select>
+              </label>
+            </div>
+            <ul class="list">
+              ${items.map((item) => `
+                <li class="item">
+                  <div class="meta">
+                    <span class="pill ${statusPill(statusFor(item))}">${statusFor(item)}</span>
+                    <span>${fmtDate(item.date)}</span>
+                    <span>${countdown(item.date)}</span>
+                    <span>${item.category}</span>
+                    ${item.priority ? "<span class='pill'>" + item.priority + "</span>" : ""}
+                  </div>
+                  <strong>${item.title}</strong>
+                  <div class="tiny">${item.action || ""}</div>
+                  ${item.needsConfirmation ? "<div class='tiny'><strong>A confirmer:</strong> " + item.confirmationReason + "</div>" : ""}
+                  <div class="cta-row">
+                    <button class="btn" data-open-id="${item.id}">Details</button>
+                    <label class="tiny"><input type="checkbox" data-check-id="${item.id}" ${state.data.completed[item.id] ? "checked" : ""}> Termine</label>
+                  </div>
+                </li>
+              `).join("")}
+            </ul>
+          </div>
+        `;
+      } else {
+        actionPrimary.innerHTML = `
+          <div class="phase-list">
+            ${phaseGroups.map((phase) => {
+              const ids = phase.items;
+              const done = ids.filter((id) => state.data.completed[id]).length;
+              const pct = Math.round((done / ids.length) * 100) || 0;
+              return `
+                <article class="phase-card">
+                  <h4>${phase.title}</h4>
+                  <p class="tiny">${done}/${ids.length} termine(s)</p>
+                  <div class="progress"><span style="width:${pct}%"></span></div>
+                  <ul class="list" style="margin-top:0.7rem;">
+                    ${ids.map((id) => {
+                      const it = byId[id];
+                      const st = statusFor(it);
+                      return `
+                        <li class="item">
+                          <div class="meta">
+                            <span class="pill ${statusPill(st)}">${st}</span>
+                            <span>${it.date ? fmtDate(it.date) : "Periode"}</span>
+                          </div>
+                          <strong>${it.title}</strong>
+                          <div class="cta-row">
+                            <button class="btn" data-open-id="${it.id}">Details</button>
+                            <label class="tiny"><input type="checkbox" data-check-id="${it.id}" ${state.data.completed[it.id] ? "checked" : ""}> Termine</label>
+                          </div>
+                        </li>
+                      `;
+                    }).join("")}
+                  </ul>
+                </article>
+              `;
+            }).join("")}
+          </div>
+        `;
+      }
+
+      root.querySelectorAll("[data-action-view]").forEach((btn) => btn.addEventListener("click", () => {
+        state.actionView = btn.getAttribute("data-action-view");
+        renderActionPlan();
+      }));
+      root.querySelectorAll("[data-open-id]").forEach((btn) => btn.addEventListener("click", () => openModal(btn.getAttribute("data-open-id"))));
+      root.querySelectorAll("[data-check-id]").forEach((cb) => cb.addEventListener("change", (e) => toggleDone(e.target.getAttribute("data-check-id"), e.target.checked)));
+
+      const statusFilter = document.getElementById("statusFilter");
+      if (statusFilter) statusFilter.addEventListener("change", (e) => { state.deadlineStatusFilter = e.target.value; renderActionPlan(); });
+      const catFilter = document.getElementById("catFilter");
+      if (catFilter) catFilter.addEventListener("change", (e) => { state.deadlineCategoryFilter = e.target.value; renderActionPlan(); });
+      const sortFilter = document.getElementById("sortFilter");
+      if (sortFilter) sortFilter.addEventListener("change", (e) => { state.deadlineSort = e.target.value; renderActionPlan(); });
+    }
+
+    function renderTimeline() {
+      const root = document.getElementById("timeline");
+      const filtered = timelineItems
+        .filter((i) => state.timelineFilter === "Tout" ? true : i.category === state.timelineFilter)
+        .sort((a, b) => toDate(a) - toDate(b));
+      const byYear = {};
+      filtered.forEach((item) => {
+        const d = toDate(item) || new Date();
+        const y = d.getFullYear();
+        if (!byYear[y]) byYear[y] = [];
+        byYear[y].push(item);
+      });
+      root.innerHTML = `
+        <div class="card">
+          <h2>Timeline interactive</h2>
+          <p class="muted">Chronologie complete avec filtres par categorie.</p>
+          <label class="field" style="max-width:280px; margin-bottom:0.8rem;">Filtre
+            <select id="timelineFilter">${categories.map((c) => "<option " + (state.timelineFilter === c ? "selected" : "") + ">" + c + "</option>").join("")}</select>
+          </label>
+          ${Object.keys(byYear).sort().map((y) => `
+            <section class="phase-card" style="margin-bottom:0.8rem;">
+              <h3>${y}</h3>
+              <div class="timeline-wrap">
+                ${byYear[y].map((item) => `
+                  <article class="tl" data-open-id="${item.id}" tabindex="0" role="button" aria-label="${item.title}">
+                    <strong>${item.title}</strong>
+                    <div class="meta">
+                      <span>${item.kind === "period" ? (fmtDate(item.start) + " -> " + (item.end ? fmtDate(item.end) : "Fin a confirmer")) : fmtDate(item.date)}</span>
+                      <span class="pill ${statusPill(statusFor(item))}">${statusFor(item)}</span>
+                      <span>${item.category}</span>
+                      ${item.needsConfirmation ? "<span class='pill accent'>A confirmer</span>" : ""}
+                    </div>
+                  </article>
+                `).join("")}
+              </div>
+            </section>
+          `).join("")}
+        </div>
+      `;
+
+      document.getElementById("timelineFilter").addEventListener("change", (e) => {
+        state.timelineFilter = e.target.value;
+        renderTimeline();
+      });
+      root.querySelectorAll("[data-open-id]").forEach((el) => {
+        el.addEventListener("click", () => openModal(el.getAttribute("data-open-id")));
+        el.addEventListener("keypress", (e) => { if (e.key === "Enter") openModal(el.getAttribute("data-open-id")); });
+      });
+    }
+
+    function getEventsForDay(year, month, day) {
+      const start = new Date(year, month, day, 0, 0, 0);
+      const end = new Date(year, month, day, 23, 59, 59);
+      return timelineItems.filter((item) => {
+        if (item.kind === "period") {
+          if (!item.start) return false;
+          const s = new Date(item.start + "T00:00:00");
+          const e = item.end ? new Date(item.end + "T23:59:59") : s;
+          return s <= end && e >= start;
+        }
+        if (!item.date) return false;
+        const d = new Date(item.date + "T12:00:00");
+        return d.getFullYear() === year && d.getMonth() === month && d.getDate() === day;
+      });
+    }
+
+    function renderCalendar() {
+      const root = document.getElementById("calendar");
+      const y = state.calendarYear;
+      const m = state.calendarMonth;
+      const monthName = new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric" }).format(new Date(y, m, 1));
+      const firstDay = new Date(y, m, 1);
+      const offset = (firstDay.getDay() + 6) % 7;
+      const days = new Date(y, m + 1, 0).getDate();
+      const now = new Date();
+      const cells = [];
+      for (let i = 0; i < offset; i++) cells.push("<div class='cal-cell' aria-hidden='true'></div>");
+      for (let d = 1; d <= days; d++) {
+        const events = getEventsForDay(y, m, d);
+        const isToday = y === now.getFullYear() && m === now.getMonth() && d === now.getDate();
+        cells.push(`
+          <div class="cal-cell ${isToday ? "today" : ""}">
+            <div class="cal-num">${d}</div>
+            ${events.slice(0, 2).map((ev) => "<div class='cal-evt' data-open-id='" + ev.id + "'>" + ev.title + "</div>").join("")}
+            ${events.length > 2 ? "<div class='tiny'>+" + (events.length - 2) + " autre(s)</div>" : ""}
+          </div>
+        `);
+      }
+      root.innerHTML = `
+        <div class="card">
+          <h2>Calendrier</h2>
+          <p class="muted">Navigation mensuelle des jalons et obligations.</p>
+          <div class="calendar-header">
+            <button class="btn" id="prevMonth">← Mois precedent</button>
+            <strong style="text-transform:capitalize;">${monthName}</strong>
+            <button class="btn" id="nextMonth">Mois suivant →</button>
+          </div>
+          <div class="calendar-grid">
+            ${["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"].map((d) => "<div class='cal-name'>" + d + "</div>").join("")}
+            ${cells.join("")}
+          </div>
+        </div>
+      `;
+      document.getElementById("prevMonth").addEventListener("click", () => {
+        state.calendarMonth -= 1;
+        if (state.calendarMonth < 0) { state.calendarMonth = 11; state.calendarYear -= 1; }
+        renderCalendar();
+      });
+      document.getElementById("nextMonth").addEventListener("click", () => {
+        state.calendarMonth += 1;
+        if (state.calendarMonth > 11) { state.calendarMonth = 0; state.calendarYear += 1; }
+        renderCalendar();
+      });
+      root.querySelectorAll("[data-open-id]").forEach((el) => el.addEventListener("click", () => openModal(el.getAttribute("data-open-id"))));
+    }
+
+    function renderIntentTab() {
+      const root = document.getElementById("intent-doc");
+      const profile = state.data.profile;
+      const doc = state.data.intentDoc;
+      const progress = intentCompleteness();
+      const step = intentSteps[state.intentStep];
+      const dueItem = byId["admin-30nov-intention"];
+
+      root.innerHTML = `
+        <div class="card">
+          <h2>Document d'intention - parcours guide</h2>
+          <p class="muted">Analyse des informations disponibles: depot sur BlackBoard, validation MA + professeur tuteur, articulation avec la 1ere reunion tripartite, echeance officielle ${fmtDate(dueItem.date)}.</p>
+          <div class="doc-grid">
+            <section>
+              <div class="meta" style="margin-bottom:0.6rem;">
+                <span class="pill ${statusPill(statusFor(dueItem))}">${statusFor(dueItem)}</span>
+                <span>Echeance: ${fmtDate(dueItem.date)}</span>
+                <span>${countdown(dueItem.date)}</span>
+              </div>
+              <div class="progress"><span style="width:${progress.pct}%"></span></div>
+              <p class="tiny">${progress.done}/${progress.total} champs critiques completes.</p>
+              <div class="stepper">
+                ${intentSteps.map((s, i) => `
+                  <button class="step ${state.intentStep === i ? "active" : ""}" data-step="${i}">
+                    <span class="tiny">Etape ${i + 1}</span>
+                    <strong>${s.title}</strong>
+                  </button>
+                `).join("")}
+              </div>
+              <div id="intentForm"></div>
+            </section>
+            <aside class="phase-card">
+              <h4>Cadre officiel utilise</h4>
+              <ul class="list">
+                <li class="item"><strong>Objectif</strong><div class="tiny">Cadrer les missions de l'alternance et aligner les attentes pedagogiques.</div></li>
+                <li class="item"><strong>Obligatoire</strong><div class="tiny">Validation MA + professeur tuteur avant depot.</div></li>
+                <li class="item"><strong>Structure attendue</strong><div class="tiny">Contexte, missions, competences visees, modalites de suivi.</div></li>
+                <li class="item"><strong>Critere non explicite</strong><div class="tiny">Barreme detaille non documente dans les sources -> A confirmer.</div></li>
+              </ul>
+            </aside>
+          </div>
+        </div>
+      `;
+
+      const intentForm = document.getElementById("intentForm");
+      if (step.key === "context") {
+        intentForm.innerHTML = `
+          <div class="phase-card">
+            <h3>${step.title}</h3>
+            <p class="muted">${step.description}</p>
+            <label class="field">Objectif du document d'intention
+              <textarea data-intent="context.intentGoal" placeholder="Definir la trajectoire de mon alternance, les missions et les competences a construire.">${doc.context.intentGoal || ""}</textarea>
+            </label>
+            <label class="field">Contexte entreprise / equipe (${profile.company || "entreprise a completer"})
+              <textarea data-intent="context.missionContext" placeholder="Contexte de l'entreprise, equipe, enjeux, secteur...">${doc.context.missionContext || ""}</textarea>
+            </label>
+            <label class="field">Impact attendu pour l'etudiant
+              <textarea data-intent="context.expectedImpact" placeholder="Valeur attendue pour ma progression academique et professionnelle...">${doc.context.expectedImpact || ""}</textarea>
+            </label>
+          </div>
+        `;
+      }
+      if (step.key === "missions") {
+        intentForm.innerHTML = `
+          <div class="phase-card">
+            <h3>${step.title}</h3>
+            <p class="muted">${step.description}</p>
+            <label class="field">Missions principales
+              <textarea data-intent="missions.missionScope" placeholder="Lister 3 a 5 missions centrales de l'alternance.">${doc.missions.missionScope || ""}</textarea>
+            </label>
+            <label class="field">Livrables concrets attendus
+              <textarea data-intent="missions.expectedDeliverables" placeholder="Ex: analyses, supports, projets, reportings...">${doc.missions.expectedDeliverables || ""}</textarea>
+            </label>
+            <label class="field">Interlocuteurs clefs
+              <textarea data-intent="missions.stakeholders" placeholder="MA, equipe, parties prenantes internes...">${doc.missions.stakeholders || ""}</textarea>
+            </label>
+          </div>
+        `;
+      }
+      if (step.key === "skills") {
+        intentForm.innerHTML = `
+          <div class="phase-card">
+            <h3>${step.title}</h3>
+            <p class="muted">${step.description}</p>
+            <label class="field">Competences techniques
+              <textarea data-intent="skills.technicalSkills" placeholder="Outils, methodes, disciplines a developper...">${doc.skills.technicalSkills || ""}</textarea>
+            </label>
+            <label class="field">Competences comportementales
+              <textarea data-intent="skills.softSkills" placeholder="Communication, pilotage, organisation, cooperation...">${doc.skills.softSkills || ""}</textarea>
+            </label>
+            <label class="field">Objectifs d'apprentissage relies au programme ESCP
+              <textarea data-intent="skills.learningObjectives" placeholder="Lien explicite entre missions et progression pedagogique.">${doc.skills.learningObjectives || ""}</textarea>
+            </label>
+          </div>
+        `;
+      }
+      if (step.key === "supervision") {
+        intentForm.innerHTML = `
+          <div class="phase-card">
+            <h3>${step.title}</h3>
+            <p class="muted">${step.description}</p>
+            <label class="field">Fenetre cible pour la 1ere reunion tripartite
+              <input data-intent="supervision.tripartiteWindow" value="${doc.supervision.tripartiteWindow || ""}" placeholder="Ex: fin octobre a novembre 2026">
+              <span class="field-hint">Rappel: certaines sources divergent sur la borne exacte.</span>
+            </label>
+            <label class="field">Cadre de suivi avec MA (${profile.apprenticeMentorName || "nom MA a renseigner"})
+              <textarea data-intent="supervision.mentorSupport" placeholder="Rythme de points, criteres de progression, feedback...">${doc.supervision.mentorSupport || ""}</textarea>
+            </label>
+            <label class="field">Cadre de suivi avec professeur tuteur (${profile.tutorName || "nom tuteur a renseigner"})
+              <textarea data-intent="supervision.tutorSupport" placeholder="Points pedagogiques, jalons, besoins d'arbitrage...">${doc.supervision.tutorSupport || ""}</textarea>
+            </label>
+            <label class="field">Risques ou points de vigilance
+              <textarea data-intent="supervision.watchPoints" placeholder="Contraintes, dependances, risques d'ecart, besoins de support...">${doc.supervision.watchPoints || ""}</textarea>
+            </label>
+          </div>
+        `;
+      }
+      if (step.key === "finalize") {
+        intentForm.innerHTML = `
+          <div class="phase-card">
+            <h3>${step.title}</h3>
+            <p class="muted">${step.description}</p>
+            <div class="confidentiality">
+              <strong>Synthese pre-remise</strong>
+              <p class="tiny">Etudiant: ${activeStudentName()} · Entreprise: ${profile.company || "A renseigner"} · Poste: ${profile.roleTitle || "A renseigner"}</p>
+              <p class="tiny">MA: ${profile.apprenticeMentorName || "A renseigner"} · Tuteur: ${profile.tutorName || "A renseigner"}</p>
+            </div>
+            <label class="field">Date interne cible de finalisation
+              <input type="date" data-intent="finalize.internalDeadline" value="${doc.finalize.internalDeadline || ""}">
+            </label>
+            <label class="field">Canal de depot
+              <input data-intent="finalize.uploadChannel" value="${doc.finalize.uploadChannel || "BlackBoard"}">
+            </label>
+            <label class="field">Note finale
+              <textarea data-intent="finalize.finalChecklistNote" placeholder="Ce qu'il reste a verifier avant depot.">${doc.finalize.finalChecklistNote || ""}</textarea>
+            </label>
+            <label class="field"><span><input type="checkbox" id="intentSignaturesReady" ${doc.finalize.signaturesReady ? "checked" : ""}> Les validations MA + tuteur sont pretes</span></label>
+          </div>
+        `;
+      }
+
+      root.querySelectorAll("[data-step]").forEach((btn) => btn.addEventListener("click", () => {
+        state.intentStep = Number(btn.getAttribute("data-step"));
+        renderIntentTab();
+      }));
+      root.querySelectorAll("[data-intent]").forEach((el) => {
+        const eventName = el.tagName === "INPUT" ? "input" : "input";
+        el.addEventListener(eventName, () => {
+          const path = el.getAttribute("data-intent").split(".");
+          const section = path[0];
+          const field = path[1];
+          state.data.intentDoc[section][field] = el.value;
+          saveData();
+        });
+      });
+      const sig = document.getElementById("intentSignaturesReady");
+      if (sig) {
+        sig.addEventListener("change", () => {
+          state.data.intentDoc.finalize.signaturesReady = sig.checked;
+          saveData();
+          renderIntentTab();
+        });
+      }
+    }
+
+    function renderProfile() {
+      const root = document.getElementById("profile");
+      const p = state.data.profile;
+      root.innerHTML = `
+        <div class="grid">
+          <article class="card span-8">
+            <h2>Profil et personnalisation</h2>
+            <p class="muted">Ces informations alimentent automatiquement les sections Assistant, Plan d'action et Document d'intention.</p>
+            <form id="profileForm" class="grid">
+              <label class="field span-6">Prenom<input name="firstName" value="${p.firstName || ""}" required></label>
+              <label class="field span-6">Nom<input name="lastName" value="${p.lastName || ""}" required></label>
+              <label class="field span-6">Entreprise<input name="company" value="${p.company || ""}" required></label>
+              <label class="field span-6">Poste / intitule<input name="roleTitle" value="${p.roleTitle || ""}" required></label>
+              <label class="field span-6">Maitre d'apprentissage - nom<input name="apprenticeMentorName" value="${p.apprenticeMentorName || ""}"></label>
+              <label class="field span-6">Maitre d'apprentissage - fonction<input name="apprenticeMentorRole" value="${p.apprenticeMentorRole || ""}"></label>
+              <label class="field span-6">Maitre d'apprentissage - email<input name="apprenticeMentorEmail" type="email" value="${p.apprenticeMentorEmail || ""}"></label>
+              <label class="field span-6">Maitre d'apprentissage - telephone<input name="apprenticeMentorPhone" value="${p.apprenticeMentorPhone || ""}"></label>
+              <label class="field span-6">Professeur tuteur - nom<input name="tutorName" value="${p.tutorName || ""}"></label>
+              <label class="field span-6">Professeur tuteur - email<input name="tutorEmail" type="email" value="${p.tutorEmail || ""}"></label>
+              <label class="field span-6">Professeur tuteur - telephone<input name="tutorPhone" value="${p.tutorPhone || ""}"></label>
+              <label class="field span-6">Cohorte<input name="cohort" value="${p.cohort || ""}"></label>
+              <label class="field span-6">Onglet favori
+                <select name="preferredView">${["Assistant", "Plan d'action", "Timeline", "Calendrier", "Document d'intention"].map((v) => "<option " + (p.preferredView === v ? "selected" : "") + ">" + v + "</option>").join("")}</select>
+              </label>
+              <div class="span-12 cta-row">
+                <button class="btn primary" type="submit">Enregistrer les modifications</button>
+                <button class="btn" type="button" id="openNewOnboarding">Nouveau profil etudiant</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="card span-4">
+            <h3>Partage & confidentialite</h3>
+            <div class="confidentiality">
+              <p class="tiny"><strong>Separation locale des donnees:</strong> chaque profil etudiant est isole dans son propre espace de stockage navigateur.</p>
+              <p class="tiny"><strong>Confidentialite:</strong> les donnees ne quittent pas ce navigateur sans action explicite.</p>
+              <p class="tiny"><strong>Droits d'acces:</strong> en partageant le fichier HTML, chaque utilisateur cree son propre profil local.</p>
+            </div>
+            <div class="cta-row" style="margin-top:0.8rem;">
+              <button class="btn ghost" id="switchProfileBtn">Changer d'etudiant</button>
+              <button class="btn" id="deleteProfileBtn">Supprimer ce profil local</button>
+            </div>
+            <div class="tiny" style="margin-top:0.8rem;">Profil actif: <strong>${activeStudentName()}</strong></div>
+          </article>
+        </div>
+      `;
+
+      const form = document.getElementById("profileForm");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const f = new FormData(form);
+        Object.keys(state.data.profile).forEach((k) => {
+          state.data.profile[k] = f.get(k) || "";
+        });
+        saveData();
+        renderAll();
+      });
+      document.getElementById("openNewOnboarding").addEventListener("click", () => {
+        state.activeUserId = null;
+        localStorage.removeItem(STORAGE.activeUser);
+        loadDataForActiveUser();
+        state.onboardingStep = 0;
+        state.onboardingDraft = {};
+        maybeOpenOnboarding(true);
+      });
+      document.getElementById("switchProfileBtn").addEventListener("click", () => {
+        state.onboardingStep = 0;
+        state.onboardingDraft = {};
+        maybeOpenOnboarding(true);
+      });
+      document.getElementById("deleteProfileBtn").addEventListener("click", () => {
+        if (window.confirm("Supprimer ce profil local et ses donnees associees ?")) {
+          deleteCurrentUser();
+        }
+      });
+    }
+
+    function renderResources() {
+      const root = document.getElementById("resources");
+      root.innerHTML = `
+        <div class="grid">
+          <article class="card span-8">
+            <h2>Comprendre mon alternance</h2>
+            <p class="muted">Explications pedagogiques concises, basees sur les informations deja structurees.</p>
+            <details open>
+              <summary>Comment utiliser les sections sans confusion ?</summary>
+              <p><strong>Plan d'action</strong> pilote ce qu'il faut faire. En mode "Echeances", vous gerez les dates; en mode "Parcours guide", vous suivez les etapes par phase.</p>
+            </details>
+            <details>
+              <summary>A quoi sert le document d'intention ?</summary>
+              <p>Il aligne vos missions, competences ciblees et modalites de suivi. Il doit etre valide par votre MA et votre professeur tuteur avant depot sur BlackBoard.</p>
+            </details>
+            <details>
+              <summary>Pourquoi renseigner le profil complet ?</summary>
+              <p>Le profil evite de ressaisir les memes informations partout et personnalise automatiquement les recommandations, formulaires et syntheses.</p>
+            </details>
+            <details>
+              <summary>Que faire en cas de date contradictoire ?</summary>
+              <p>L'application marque les elements concernes "A confirmer" pour eviter toute interpretation erronee. Validez ces points avec l'administration.</p>
+            </details>
+          </article>
+          <article class="card span-4">
+            <h3>Incoherences a verifier</h3>
+            <ul class="list">
+              <li class="item"><strong>Reunion tripartite 1</strong><div class="tiny">Fin octobre 2026 vs octobre/novembre 2026.</div></li>
+              <li class="item"><strong>Reunion tripartite 2</strong><div class="tiny">Mention janvier/fevrier 2026 incoherente avec fevrier/mars 2027.</div></li>
+              <li class="item"><strong>Semestre international</strong><div class="tiny">Bornes exactes dependantes de l'universite/campus.</div></li>
+              <li class="item"><strong>Forum entreprises</strong><div class="tiny">Date signalee TBC.</div></li>
+            </ul>
+          </article>
+        </div>
+      `;
+    }
+
+    function bindTabs() {
+      if (bindTabs.bound) return;
+      bindTabs.bound = true;
+      const buttons = document.querySelectorAll(".tab-btn");
+      const panels = document.querySelectorAll(".tab-panel");
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const tab = btn.getAttribute("data-tab");
+          state.tab = tab;
+          buttons.forEach((b) => b.classList.toggle("active", b === btn));
+          panels.forEach((p) => p.classList.toggle("active", p.id === tab));
+        });
+      });
+      if (state.data.profile.preferredView) {
+        const mapping = {
+          "Assistant": "assistant",
+          "Plan d'action": "action-plan",
+          "Timeline": "timeline",
+          "Calendrier": "calendar",
+          "Document d'intention": "intent-doc"
+        };
+        const targetTab = mapping[state.data.profile.preferredView] || "assistant";
+        const target = document.querySelector(".tab-btn[data-tab='" + targetTab + "']");
+        if (target) target.click();
+      }
+    }
+
+    function renderUserIdentity() {
+      const today = new Intl.DateTimeFormat("fr-FR", { weekday: "long", day: "2-digit", month: "long", year: "numeric" }).format(new Date());
+      document.getElementById("todayChip").innerHTML = "<strong>Aujourd'hui</strong> · " + today;
+      document.getElementById("activeUserLabel").textContent = activeStudentName();
+    }
+
+    function maybeOpenOnboarding(forceOpen) {
+      const overlay = document.getElementById("onboarding");
+      const hasActiveUser = !!state.activeUserId;
+      if (!hasActiveUser || forceOpen) {
+        overlay.classList.add("open");
+        overlay.setAttribute("aria-hidden", "false");
+        renderOnboarding();
+      } else {
+        overlay.classList.remove("open");
+        overlay.setAttribute("aria-hidden", "true");
+      }
+    }
+
+    function onboardingViews() {
+      const users = state.users;
+      return [
+        {
+          title: "Choisissez votre mode",
+          render: () => `
+            <div>
+              <h3>1. Selection du profil</h3>
+              <p class="muted">Choisissez un profil existant ou creez un nouveau profil etudiant.</p>
+              <div class="list">
+                ${users.map((u) => `
+                  <button class="item btn" data-existing-user="${u.id}" style="text-align:left;">
+                    <strong>${[u.firstName, u.lastName].filter(Boolean).join(" ") || "Profil sans nom"}</strong>
+                    <div class="tiny">${u.company || "Entreprise non renseignee"}</div>
+                  </button>
+                `).join("") || "<div class='item tiny'>Aucun profil local existant.</div>"}
+              </div>
+            </div>
+            <div class="focus-box">
+              <strong>Nouveau profil</strong>
+              <p class="tiny">Pour partager l'application avec d'autres etudiants, chaque etudiant cree son profil local distinct.</p>
+              <button class="btn primary" data-onboarding-new="1">Creer un nouveau profil</button>
+            </div>
+          `,
+          validate: () => state.activeUserId || state.onboardingDraft.newProfile
+        },
+        {
+          title: "Identite et parcours",
+          render: () => `
+            <div>
+              <h3>2. Identite</h3>
+              <label class="field">Prenom<input id="obFirstName" value="${state.onboardingDraft.firstName || ""}"></label>
+              <label class="field">Nom<input id="obLastName" value="${state.onboardingDraft.lastName || ""}"></label>
+              <label class="field">Cohorte<input id="obCohort" value="${state.onboardingDraft.cohort || "Promo 2028"}"></label>
+            </div>
+            <div class="focus-box">
+              <strong>Objectif</strong>
+              <p class="tiny">Votre nom et votre cohorte seront reutilises dans toutes les syntheses et vues guidees.</p>
+            </div>
+          `,
+          validate: () => String(state.onboardingDraft.firstName || "").trim() && String(state.onboardingDraft.lastName || "").trim()
+        },
+        {
+          title: "Entreprise et role",
+          render: () => `
+            <div>
+              <h3>3. Entreprise</h3>
+              <label class="field">Entreprise<input id="obCompany" value="${state.onboardingDraft.company || ""}"></label>
+              <label class="field">Poste / intitule<input id="obRoleTitle" value="${state.onboardingDraft.roleTitle || ""}"></label>
+            </div>
+            <div class="focus-box">
+              <strong>Pourquoi ?</strong>
+              <p class="tiny">Ces informations alimentent automatiquement le document d'intention et le plan d'action.</p>
+            </div>
+          `,
+          validate: () => String(state.onboardingDraft.company || "").trim() && String(state.onboardingDraft.roleTitle || "").trim()
+        },
+        {
+          title: "Encadrants",
+          render: () => `
+            <div>
+              <h3>4. Encadrement</h3>
+              <label class="field">Maitre d'apprentissage - nom<input id="obMentorName" value="${state.onboardingDraft.apprenticeMentorName || ""}"></label>
+              <label class="field">Maitre d'apprentissage - email<input id="obMentorEmail" value="${state.onboardingDraft.apprenticeMentorEmail || ""}"></label>
+              <label class="field">Professeur tuteur - nom<input id="obTutorName" value="${state.onboardingDraft.tutorName || ""}"></label>
+              <label class="field">Professeur tuteur - email<input id="obTutorEmail" value="${state.onboardingDraft.tutorEmail || ""}"></label>
+            </div>
+            <div class="focus-box">
+              <strong>Accompagnement actif</strong>
+              <p class="tiny">L'application vous rappelle qui validera chaque livrable sans redemander l'information.</p>
+            </div>
+          `,
+          validate: () => String(state.onboardingDraft.apprenticeMentorName || "").trim() && String(state.onboardingDraft.tutorName || "").trim()
+        },
+        {
+          title: "Finalisation",
+          render: () => `
+            <div>
+              <h3>5. Pret a lancer votre assistant ?</h3>
+              <div class="confidentiality">
+                <p class="tiny"><strong>Profil:</strong> ${[state.onboardingDraft.firstName, state.onboardingDraft.lastName].filter(Boolean).join(" ")}</p>
+                <p class="tiny"><strong>Entreprise:</strong> ${state.onboardingDraft.company || "—"} · <strong>Poste:</strong> ${state.onboardingDraft.roleTitle || "—"}</p>
+                <p class="tiny"><strong>MA:</strong> ${state.onboardingDraft.apprenticeMentorName || "—"} · <strong>Tuteur:</strong> ${state.onboardingDraft.tutorName || "—"}</p>
+              </div>
+            </div>
+            <div class="focus-box">
+              <strong>Apres validation</strong>
+              <p class="tiny">Vous accedez directement a un tableau de bord personnalise avec actions prioritaires et parcours guide.</p>
+            </div>
+          `,
+          validate: () => true
+        }
+      ];
+    }
+
+    function harvestOnboardingInputs(stepIndex) {
+      if (stepIndex === 1) {
+        state.onboardingDraft.firstName = (document.getElementById("obFirstName") || {}).value || state.onboardingDraft.firstName || "";
+        state.onboardingDraft.lastName = (document.getElementById("obLastName") || {}).value || state.onboardingDraft.lastName || "";
+        state.onboardingDraft.cohort = (document.getElementById("obCohort") || {}).value || state.onboardingDraft.cohort || "Promo 2028";
+      }
+      if (stepIndex === 2) {
+        state.onboardingDraft.company = (document.getElementById("obCompany") || {}).value || state.onboardingDraft.company || "";
+        state.onboardingDraft.roleTitle = (document.getElementById("obRoleTitle") || {}).value || state.onboardingDraft.roleTitle || "";
+      }
+      if (stepIndex === 3) {
+        state.onboardingDraft.apprenticeMentorName = (document.getElementById("obMentorName") || {}).value || state.onboardingDraft.apprenticeMentorName || "";
+        state.onboardingDraft.apprenticeMentorEmail = (document.getElementById("obMentorEmail") || {}).value || state.onboardingDraft.apprenticeMentorEmail || "";
+        state.onboardingDraft.tutorName = (document.getElementById("obTutorName") || {}).value || state.onboardingDraft.tutorName || "";
+        state.onboardingDraft.tutorEmail = (document.getElementById("obTutorEmail") || {}).value || state.onboardingDraft.tutorEmail || "";
+      }
+    }
+
+    function renderOnboarding() {
+      const views = onboardingViews();
+      const step = views[state.onboardingStep];
+      const body = document.getElementById("onboardingBody");
+      body.innerHTML = step.render();
+      document.getElementById("onboardingProgress").style.width = (((state.onboardingStep + 1) / views.length) * 100) + "%";
+      document.getElementById("onboardingPrev").disabled = state.onboardingStep === 0;
+      document.getElementById("onboardingNext").textContent = state.onboardingStep === views.length - 1 ? "Lancer mon espace" : "Continuer";
+
+      body.querySelectorAll("[data-existing-user]").forEach((btn) => btn.addEventListener("click", () => {
+        state.activeUserId = btn.getAttribute("data-existing-user");
+        localStorage.setItem(STORAGE.activeUser, state.activeUserId);
+        loadDataForActiveUser();
+        document.getElementById("onboarding").classList.remove("open");
+        renderAll();
+      }));
+      body.querySelectorAll("[data-onboarding-new]").forEach((btn) => btn.addEventListener("click", () => {
+        state.onboardingDraft.newProfile = true;
+        state.onboardingStep = 1;
+        renderOnboarding();
+      }));
+    }
+
+    function bindOnboardingNav() {
+      document.getElementById("onboardingPrev").addEventListener("click", () => {
+        if (state.onboardingStep > 0) {
+          state.onboardingStep -= 1;
+          renderOnboarding();
+        }
+      });
+
+      document.getElementById("onboardingNext").addEventListener("click", () => {
+        const views = onboardingViews();
+        harvestOnboardingInputs(state.onboardingStep);
+        const current = views[state.onboardingStep];
+        if (!current.validate()) {
+          window.alert("Merci de completer les informations requises pour continuer.");
+          return;
+        }
+        if (state.onboardingStep < views.length - 1) {
+          state.onboardingStep += 1;
+          renderOnboarding();
+          return;
+        }
+
+        if (!state.activeUserId) {
+          createUserFromOnboarding({
+            firstName: state.onboardingDraft.firstName || "",
+            lastName: state.onboardingDraft.lastName || "",
+            cohort: state.onboardingDraft.cohort || "Promo 2028",
+            company: state.onboardingDraft.company || "",
+            roleTitle: state.onboardingDraft.roleTitle || "",
+            apprenticeMentorName: state.onboardingDraft.apprenticeMentorName || "",
+            apprenticeMentorRole: "",
+            apprenticeMentorEmail: state.onboardingDraft.apprenticeMentorEmail || "",
+            apprenticeMentorPhone: "",
+            tutorName: state.onboardingDraft.tutorName || "",
+            tutorEmail: state.onboardingDraft.tutorEmail || "",
+            tutorPhone: "",
+            preferredView: "Assistant"
+          });
+        } else {
+          saveData();
+        }
+
+        state.onboardingDraft = {};
+        state.onboardingStep = 0;
+        document.getElementById("onboarding").classList.remove("open");
+        renderAll();
+      });
+    }
+
+    function renderAll() {
+      loadDataForActiveUser();
+      renderUserIdentity();
+      renderAssistant();
+      renderActionPlan();
+      renderTimeline();
+      renderCalendar();
+      renderIntentTab();
+      renderProfile();
+      renderResources();
+      bindTabs();
+    }
+
+    document.getElementById("closeModal").addEventListener("click", closeModal);
+    document.getElementById("eventModal").addEventListener("click", (e) => { if (e.target.id === "eventModal") closeModal(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+    bindOnboardingNav();
+    renderAll();
+    maybeOpenOnboarding(false);
+  </script>
+</body>
+</html>
